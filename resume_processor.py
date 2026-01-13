@@ -20,7 +20,7 @@ class ResumeProcessor:
         self.output_parser = JsonOutputParser()
         
     def extract_text(self, file_path: str) -> str:
-        """从 PDF 或 Word 文件中提取文本"""
+        """从 PDF、Word 或 文本文件中提取文本"""
         ext = os.path.splitext(file_path)[1].lower()
         text = ""
         if ext == ".pdf":
@@ -31,6 +31,9 @@ class ResumeProcessor:
             doc = Document(file_path)
             for para in doc.paragraphs:
                 text += para.text + "\n"
+        elif ext == ".txt":
+            with open(file_path, "r", encoding="utf-8") as f:
+                text = f.read()
         else:
             raise ValueError(f"不支持的文件格式: {ext}")
         return text
